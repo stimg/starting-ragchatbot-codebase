@@ -1,7 +1,9 @@
-# Frontend & Testing Changes - Code Quality and Testing Framework Enhancement
+# Frontend & Testing Changes - Code Quality, Testing Framework & UI Theme Toggle
 
 ## Overview
-This document outlines the comprehensive changes made to implement code quality tools and an enhanced testing framework for the RAG chatbot system.
+This document outlines comprehensive changes made to implement code quality tools, testing framework enhancements, and UI improvements including dark/light theme toggle for the RAG chatbot system.
+
+---
 
 ## Part 1: Frontend Code Quality Tools
 
@@ -11,17 +13,12 @@ This document outlines the comprehensive changes made to implement code quality 
 
 1. **frontend/package.json**
    - Package configuration for frontend development dependencies
-   - Scripts defined for linting and formatting:
-     - `npm run lint` - Run ESLint on JavaScript files
-     - `npm run lint:fix` - Auto-fix ESLint violations
-     - `npm run format` - Format code with Prettier
-     - `npm run format:check` - Check if code is properly formatted
+   - Scripts for linting and formatting (npm run lint, format, etc.)
    - Dependencies: ESLint, Prettier, eslint-config-prettier
 
 2. **frontend/.eslintrc.json**
    - ESLint configuration for JavaScript code quality
-   - Browser environment (ES2021)
-   - Rules: semicolons required, single quotes, 4-space indentation
+   - Browser environment (ES2021), semicolons required, single quotes, 4-space indentation
 
 3. **frontend/.prettierrc.json**
    - Prettier configuration for consistent formatting
@@ -32,31 +29,16 @@ This document outlines the comprehensive changes made to implement code quality 
 
 #### Frontend Development Scripts
 
-5. **scripts/frontend-format.sh**
-   - Shell script to format frontend code using Prettier
+5. **scripts/frontend-format.sh** - Format frontend code using Prettier
+6. **scripts/frontend-lint.sh** - Lint frontend JavaScript code using ESLint
+7. **scripts/quality-check.sh** - Integrated check for frontend AND backend quality
 
-6. **scripts/frontend-lint.sh**
-   - Shell script to lint frontend JavaScript code using ESLint
-
-#### Quality Check Integration
-
-7. **scripts/quality-check.sh**
-   - Enhanced to include frontend linting checks
-   - Runs: backend linting, type checking, tests, and frontend linting
-
-### Frontend Usage
+### Frontend Quality Usage
 
 ```bash
-# Install frontend dependencies
 cd frontend && npm install && cd ..
-
-# Format code
 ./scripts/frontend-format.sh
-
-# Lint code
 ./scripts/frontend-lint.sh
-
-# Run all quality checks
 ./scripts/quality-check.sh
 ```
 
@@ -64,82 +46,112 @@ cd frontend && npm install && cd ..
 
 ## Part 2: Backend Testing Framework Enhancement
 
-### Test Configuration Changes
+### Test Configuration
 
 **pyproject.toml** - Updated with:
-- `pytest-asyncio>=0.24.0` for async test support
-- `httpx>=0.25.0` for HTTP client testing
-- `[tool.pytest.ini_options]` configuration with:
-  - `asyncio_mode = "auto"` for async handling
-  - `testpaths = ["backend/tests"]` for test discovery
-  - Pattern definitions for test files/classes/functions
-  - Verbose output with short tracebacks
+- `pytest-asyncio>=0.24.0` and `httpx>=0.25.0` for async and HTTP testing
+- `[tool.pytest.ini_options]` with auto async mode, test paths, and output formatting
 
-### Enhanced Test Fixtures (conftest.py)
+### Enhanced Test Fixtures
 
-**New Fixtures Added:**
-- `temp_db_path()` - Temporary database directories for isolated tests
-- `test_app()` - Minimal FastAPI test application avoiding static file issues
-- `test_client()` - FastAPI TestClient for making requests
-- `mock_rag_system()` - Comprehensive mock RAG system with all methods
-- `api_request_samples()` - Sample API requests for various scenarios
-- `expected_api_responses()` - Expected response structures
+**New Fixtures:**
+- `temp_db_path()` - Isolated test database directories
+- `test_app()` - Minimal FastAPI test application
+- `test_client()` - FastAPI TestClient for API testing
+- `mock_rag_system()` - Comprehensive mock RAG system
+- `api_request_samples()`, `expected_api_responses()` - Test data
 
-**Existing Fixtures Preserved:**
-- `sample_course()`, `sample_chunks()`, `mock_vector_store()`, `mock_anthropic_client()`, `test_config()`
+### Comprehensive API Tests (40+ test cases)
 
-### Comprehensive API Tests (test_api_endpoints.py)
-
-40+ test cases covering:
-- **TestQueryEndpoint** - POST `/api/query` with multi-turn conversation handling
+- **TestQueryEndpoint** - POST `/api/query` with multi-turn conversation
 - **TestCoursesEndpoint** - GET `/api/courses` with consistency verification
 - **TestSessionEndpoint** - DELETE `/api/session/{session_id}` management
-- **TestHealthCheck** - GET `/` endpoint validation
-- **TestErrorHandling** - Error scenario testing
-- **TestCorsHeaders** - CORS configuration validation
-- **TestRequestValidation** - Input validation testing
-- **TestResponseContentTypes** - Response format validation
+- **TestHealthCheck**, **TestErrorHandling**, **TestCorsHeaders**, **TestRequestValidation**, **TestResponseContentTypes**
 
 ### Test Execution
 
 ```bash
-# Run all tests
 uv run pytest
-
-# Run API tests only
 uv run pytest backend/tests/test_api_endpoints.py -v
-
-# Run with coverage
 uv run pytest backend/tests/ --cov=backend
-
-# Run specific test class
-uv run pytest backend/tests/test_api_endpoints.py::TestQueryEndpoint -v
 ```
+
+---
+
+## Part 3: Dark/Light Theme Toggle UI Feature
+
+### 1. HTML Changes (`frontend/index.html`)
+- Added `.header-top` wrapper with title and theme toggle button in top-right corner
+- Theme toggle button with sun/moon icons and ARIA labels for accessibility
+
+### 2. CSS Changes (`frontend/style.css`)
+
+#### Theme Variables
+- **Light Theme** (`[data-theme="light"]`):
+  - Background: #f8fafc, Text: #0f172a, Primary: #1d4ed8
+  - Softer surfaces (#e2e8f0) and secondary colors (#475569)
+
+- **Dark Theme** (default):
+  - Background: #0f172a, Text: #f1f5f9, Primary: #2563eb
+
+#### Theme Toggle Button
+- 44x44px accessible touch target with smooth transitions
+- Hover and focus states for keyboard navigation
+- Sun icon (dark theme) / Moon icon (light theme) toggle
+
+#### Smooth Transitions
+- 0.3s transitions on all theme-aware elements for visual comfort
+- Applied to body, main-content, sidebar, chat-container, buttons, messages
+
+### 3. JavaScript Changes (`frontend/script.js`)
+
+#### Theme Management Functions
+- **`initializeTheme()`** - Load saved theme preference or default to 'dark'
+- **`setTheme(theme)`** - Set theme attribute and persist to localStorage
+- **`toggleTheme()`** - Switch between light and dark themes
+
+#### Theme Persistence
+- Theme preference saved in localStorage
+- Loads before page render to prevent flash
+
+### Design Philosophy
+
+**Accessibility:**
+- Keyboard navigable with focus ring
+- ARIA labels for screen readers
+- Touch-friendly 44x44px button
+- High contrast in both themes
+
+**User Experience:**
+- Smooth 0.3s transitions between themes
+- Persistent preference across sessions
+- No unstyled content flash
+- Intuitive sun/moon icon design
 
 ---
 
 ## Code Style Standards
 
-### JavaScript
+### JavaScript & Frontend
 - Indentation: 4 spaces
 - Quotes: Single quotes
 - Semicolons: Always required
 - Line Length: 100 characters
-- Trailing Commas: ES5 compatible
 - Arrow Functions: Parentheses always required
 
 ### Python (Backend)
 - Line Length: 100 characters
 - Target: Python 3.13
-- Tools: Black (formatting), Ruff (linting), mypy (type checking)
+- Tools: Black, Ruff, mypy
 
 ---
 
 ## Summary
 
-✅ Frontend code quality tools (ESLint, Prettier, npm scripts)
+✅ Frontend code quality tools (ESLint, Prettier, npm integration)
+✅ Dark/Light theme toggle with persistent user preference
 ✅ 40+ comprehensive API endpoint tests
-✅ Enhanced pytest configuration and test fixtures
+✅ Enhanced pytest configuration and fixtures
+✅ Accessible UI with smooth theme transitions
 ✅ Consistent 100-character line length across frontend and backend
 ✅ Full backward compatibility with existing tests
-✅ Integrated quality check scripts for complete workflow validation
