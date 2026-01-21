@@ -17,6 +17,8 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
+    "pytest-asyncio>=0.24.0",
+    "httpx>=0.25.0",
     "black>=24.0.0",
     "ruff>=0.2.0",
     "mypy>=1.8.0",
@@ -62,3 +64,11 @@ exclude = [
     "dist",
     "__pycache__",
 ]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["backend/tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --tb=short"
