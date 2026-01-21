@@ -15,7 +15,11 @@
       "Bash(uv run pytest:*)",
       "Bash(uv add pytest --dev)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd comprehensive test suite and documentation for RAG chatbot\n\n- Implement unit tests for ai_generator, rag_system, search_tools, and vector_store\n- Add CLAUDE project documentation and development guidelines\n- Add Claude Code command implementation for feature development\n- Update backend components with bug fixes and improvements\n- Refactor frontend UI and update dependencies\n- Remove deprecated .env.example template\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd comprehensive test suite and documentation for RAG chatbot\n\n- Implement unit tests for ai_generator, rag_system, search_tools, and vector_store\n- Add CLAUDE project documentation and development guidelines\n- Add Claude Code command implementation for feature development\n- Update backend components with bug fixes and improvements\n- Refactor frontend UI and update dependencies\n- Remove deprecated .env.example template\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git merge quality_feature --no-edit)",
+      "Bash(git merge testing_feature --no-edit)",
+      "Bash(git commit:*)",
+      "Bash(git merge ui_feature --no-edit)"
     ]
   }
 }

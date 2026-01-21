@@ -66,9 +66,14 @@ body {
     padding: 0;
 }
 
-/* Header - Hidden but flex container for toggle button */
+/* Header - Flex container for toggle button */
 header {
-    display: none;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .header-top {
@@ -76,6 +81,7 @@ header {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    width: 100%;
 }
 
 header h1 {
