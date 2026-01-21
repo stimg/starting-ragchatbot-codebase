@@ -111,6 +111,32 @@ header h1 {
     margin-bottom: 0;
 }
 
+/* New Chat Button */
+.new-chat-button {
+    width: 100%;
+    padding: 0.5rem 0;
+    margin-bottom: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    text-align: left;
+}
+
+.new-chat-button:hover {
+    color: var(--primary-color);
+}
+
+.new-chat-button:focus {
+    outline: none;
+    color: var(--primary-color);
+}
+
 /* Main Chat Area */
 .chat-main {
     flex: 1;
@@ -240,9 +266,31 @@ header h1 {
     margin-bottom: 0.25rem;
 }
 
-.sources-content {
-    padding: 0 0.5rem 0.25rem 1.5rem;
+.sources-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sources-list li {
+    padding: 0.5rem 0.75rem;
+    background: var(--background);
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.sources-list a {
     color: var(--text-secondary);
+    text-decoration: none;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.sources-list a:hover {
+    color: var(--primary-color);
 }
 
 /* Markdown formatting styles */

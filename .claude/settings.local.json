@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_press_key",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_type",
+      "mcp__playwright__browser_click",
+      "Bash(cd:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(uv add pytest --dev)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd comprehensive test suite and documentation for RAG chatbot\n\n- Implement unit tests for ai_generator, rag_system, search_tools, and vector_store\n- Add CLAUDE project documentation and development guidelines\n- Add Claude Code command implementation for feature development\n- Update backend components with bug fixes and improvements\n- Refactor frontend UI and update dependencies\n- Remove deprecated .env.example template\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}
